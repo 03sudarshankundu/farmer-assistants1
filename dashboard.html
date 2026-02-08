@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Farmer Assistants - Dashboard</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- PROFILE BUTTON -->
+<div id="profileBtn" onclick="openProfile()">👤</div>
+
+
+<!-- ===== LOADING SCREEN ===== -->
+<div id="loader">
+  <div class="loader-box">
+      <div class="circle"></div>
+      <p>Loading...</p>
+  </div>
+</div>
+
+<!-- ===== DASHBOARD PAGE ===== -->
+<div id="dashboardPage" class="dashboard-container">
+    <h1 id="welcomeText">Welcome, Farmer!</h1>
+
+    <div class="menu-grid">
+        <div class="menu-card" onclick="openSection('weatherSection')">🌤 Weather</div>
+        <div class="menu-card" onclick="openSection('marketSection')">💹 Market</div>
+        <div class="menu-card" onclick="openSection('reminderSection')">🌱 Crop Reminder</div>
+        <div class="menu-card" onclick="location.href='mycrops.html'">📋 My Crops</div>
+        <div class="menu-card" onclick="openSection('npkSection')">🧪 NPK Calc</div>
+        <div class="menu-card" onclick="openSection('suggestSection')">🌾 Suggestions</div>
+    </div>
+
+    <!-- CONTACT US -->
+    <div class="contact-section">
+        <h2>📞 Contact Us</h2>
+        <div class="contact-box">
+            <div class="contact-item">
+                <strong>Sudarshan Kundu</strong><br>
+                📧 iam03sudarshan@gmail.com
+            </div>
+            <div class="contact-item">
+                <strong>Sougata Changdar</strong><br>
+                📧 sougatachangdar9@gmail.com
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== WEATHER SECTION ===== -->
+<div id="weatherSection" class="section">
+    <button class="back-btn" onclick="goHome()">⬅ Back</button>
+
+    <h2 class="section-title">🌤 Weather Information</h2>
+
+    <div class="split-card">
+        <img src="weather_icon.png" class="split-icon">
+        <div class="split-content">
+            <p id="weatherInfo">Loading...</p>
+            <button class="refresh-btn" onclick="loadWeather()">Refresh</button>
+
+            <div class="weather-info-box">
+    ☀️ <b>Weather plays a major role in Indian crop cultivation.</b>  
+    Warm regions (28–35°C) support crops like rice, sugarcane and jute because they need high humidity and plenty of rainfall.
+    <br><br>
+    Cooler climates (15–22°C) are perfect for wheat, mustard and potato as they grow best in mild sunlight and low humidity.
+    <br><br>
+    Moderate weather (20–30°C) supports maize, pulses and vegetables where balanced moisture is required.
+    <br><br>
+    Heavy rains increase paddy yield but damage tomatoes, onions and groundnut.  
+    Dry weather improves cotton and pulse quality but requires irrigation for rice fields.
+    <br><br>
+    🌦 <b>Knowing your daily weather helps plan irrigation, select crops, reduce losses and boost total farm productivity.</b>
+</div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- ===== MARKET SECTION ===== -->
+<div id="marketSection" class="section">
+    <button class="back-btn" onclick="goHome()">⬅ Back</button>
+
+    <h2 class="section-title">💹 Market Prices</h2>
+
+    <div class="split-card">
+        <img src="market_icon.png" class="split-icon">
+        <div class="split-content">
+            <p id="marketInfo">Loading...</p>
+            <button class="refresh-btn" onclick="loadMarket()">Refresh</button>
+
+            <div class="market-info-box">
+    💹 <b>Market price plays a vital role in a farmer’s income.</b>  
+    In India, crop prices change daily depending on supply, demand, quality and season.  
+    When mandi rates are high, farmers earn more profit, but sudden price drops can cause huge losses.  
+    <br><br>
+    Wheat, rice and maize depend on both local mandi conditions and national demand.  
+    Perishable crops like vegetables are more sensitive to price fluctuations because they can’t be stored long.  
+    <br><br>
+    ✔ Farmers should track daily market prices  
+    ✔ Sell when demand is high  
+    ✔ Compare nearby mandis  
+    ✔ Join FPOs for fair pricing  
+    <br><br>
+    💼 <b>Right price knowledge helps farmers negotiate better, avoid middlemen losses and choose the best time to sell their harvest.</b>
+</div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- ===== REMINDER SECTION ===== -->
+<div id="reminderSection" class="section">
+    <button class="back-btn" onclick="goHome()">⬅ Back</button>
+
+    <h2 class="section-title">🌱 Crop Reminder</h2>
+
+    <div class="split-card">
+        <img src="crop_icon.png" class="split-icon">
+
+        <div class="split-content">
+            <input id="fieldName" placeholder="Field Name">
+            <input id="cropName" placeholder="Crop Name">
+            <input id="sowingDate" type="date">
+            <input id="waterCount" type="number" placeholder="Water Times">
+            <input id="fertCount" type="number" placeholder="Fertilizer Times">
+
+            <button class="refresh-btn" onclick="saveCropPlan()">Save Crop</button>
+            <p id="cropPlanMsg"></p>
+        </div>
+    </div>
+
+    
+
+
+    <!-- POPULAR CROP PANEL -->
+    <div class="card">
+        <h3>🌾 Popular Crops (India)</h3>
+
+        <div class="popular-list">
+            <div class="pop-item" onclick="autofillCrop('Wheat',110,3,4)">
+                <img src="wheat.jpg">
+                <p><b>Wheat</b><br>110 days</p>
+            </div>
+
+            <div class="pop-item" onclick="autofillCrop('Rice',140,5,4)">
+                <img src="rice.jpg">
+                <p><b>Rice</b><br>140 days</p>
+            </div>
+
+            <div class="pop-item" onclick="autofillCrop('Potato',90,4,2)">
+                <img src="potato.jpg">
+                <p><b>Potato</b><br>90 days</p>
+            </div>
+
+            <div class="pop-item" onclick="autofillCrop('Maize',100,3,3)">
+                <img src="maize.jpg">
+                <p><b>Maize</b><br>100 days</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- ===== NPK CALCULATOR ===== -->
+<div id="npkSection" class="section">
+    <button class="back-btn" onclick="goHome()">⬅ Back</button>
+
+    <h2 class="section-title">🧪 NPK Calculator</h2>
+
+    <div class="split-card">
+        <img src="npk_icon.png" class="split-icon">
+        <div class="split-content">
+
+            <input id="nitrogen" placeholder="Nitrogen (N)">
+            <input id="phosphorus" placeholder="Phosphorus (P)">
+            <input id="potassium" placeholder="Potassium (K)">
+
+            <button class="refresh-btn" onclick="calculateNPK()">Calculate</button>
+
+            <p id="npkResult"></p>
+            <div class="npk-info">
+    🌱 <b>NPK</b> stands for Nitrogen (N), Phosphorus (P) and Potassium (K) — the three essential nutrients for healthy plant growth.  
+    <br><br>
+    ✔ Wheat & Rice → <b>17-17-17</b>  
+    ✔ Vegetables → <b>20-20-20</b>  
+    ✔ Leafy crops → Higher <b>N</b>  
+    ✔ Flowering & rooting → Higher <b>P</b>  
+    ✔ Disease resistance → Higher <b>K</b>
+</div>
+
+        </div>
+    </div>
+</div>
+
+<!-- ===== Suggetions ===== -->
+<div id="suggestSection" class="section">
+
+    <button class="back-btn" onclick="goHome()">⬅ Back</button>
+
+    <!-- HEADER -->
+    <h2 class="section-title">🌾 Smart Crop Suggestions</h2>
+
+    <!-- BEAUTIFUL GLASS BLOCK -->
+    <div class="glass-block">
+
+        <div id="cropSuggest" class="suggest-list">
+            Loading suggestions...
+        </div>
+
+        <button class="refresh-btn" onclick="generateCropSuggestions()">↻ Refresh Suggestions</button>
+    </div>
+
+    <!-- FERTILIZER GUIDE SECTION -->
+    <h2 class="section-title">🧴 Fertilizer Guide</h2>
+
+    <div class="glass-block">
+        <div id="fertGuide" class="fert-list">
+            Loading fertilizer guide...
+        </div>
+
+        <button class="refresh-btn" onclick="generateFertilizerGuide()">Show Guide</button>
+    </div>
+
+</div>
+
+<!-- PROFILE POPUP -->
+<div id="profilePopup">
+    <div class="profile-box">
+        <h2>👨‍🌾 Farmer Profile</h2>
+
+        <p><b>Name:</b> <span id="pName"></span></p>
+        <p><b>Email:</b> <span id="pEmail"></span></p>
+        <p><b>Phone:</b> <span id="pPhone"></span></p>
+        <p><b>Age:</b> <span id="pAge"></span></p>
+
+        <button class="logout-btn" onclick="logoutUser()">Logout</button>
+        <button class="close-btn" onclick="closeProfile()">Close</button>
+    </div>
+</div>
+
+
+<!-- FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+<script src="firebase-config.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Crops - Farmer Assistants</title>
+
+<link rel="stylesheet" href="styles.css">
+
+<style>
+/* PAGE BACKGROUND */
+body {
+    background: url("dashboard-bg.jpg") center/cover no-repeat fixed;
+    min-height: 100vh;
+    backdrop-filter: blur(4px);
+    padding: 20px;
+}
+
+/* PAGE TITLE */
+h1 {
+    text-align: center;
+    color: white;
+    font-size: 36px;
+    text-shadow: 0 4px 12px rgba(0,0,0,0.6);
+    margin-bottom: 25px;
+}
+
+/* BACK BUTTON */
+.back-btn {
+    background: #2c7a3f;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+/* GLASS CONTAINER */
+.crop-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+}
+
+/* EACH CROP CARD */
+.crop-card {
+    width: 320px;
+    padding: 20px;
+    border-radius: 18px;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.35);
+    color: white;
+    box-shadow: 0 6px 22px rgba(0,0,0,0.28);
+    animation: fadeIn 0.6s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity:0; transform:translateY(10px); }
+    to { opacity:1; transform:translateY(0); }
+}
+
+/* DELETE BUTTON */
+.delete-btn {
+    margin-top: 12px;
+    padding: 8px 14px;
+    border-radius: 8px;
+    background: #e63946;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+/* LABEL STYLING */
+.crop-card b {
+    color: #eaffea;
+}
+
+/* EMPTY MESSAGE */
+#nocrops {
+    color: white;
+    font-size: 22px;
+    text-align: center;
+    margin-top: 40px;
+}
+</style>
+
+</head>
+
+<body>
+
+<button class="back-btn" onclick="location.href='dashboard.html'">⬅ Back to Dashboard</button>
+
+<h1>📋 My Crops</h1>
+
+<div id="cropList" class="crop-container"></div>
+<p id="nocrops"></p>
+
+<!-- FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+<script src="firebase-config.js"></script>
+
+<script>
+
+/* LOAD USER CROPS */
+firebase.auth().onAuthStateChanged(user => {
+    firebase.firestore()
+        .collection("crops")
+        .where("userId", "==", user.uid)
+        .onSnapshot(snapshot => {
+            
+            cropList.innerHTML = "";
+            if (snapshot.empty) {
+                nocrops.innerHTML = "No crop plans added yet!";
+                return;
+            }
+
+            snapshot.forEach(doc => {
+                let d = doc.data();
+
+                cropList.innerHTML += `
+                    <div class='crop-card'>
+                        <p><b>Field:</b> ${d.fieldName}</p>
+                        <p><b>Crop:</b> ${d.cropName}</p>
+                        <p><b>Sowing:</b> ${d.sowingDate}</p>
+                        <p><b>Harvest:</b> ${d.harvestDate.substring(0,10)}</p>
+                        <p><b>Water Required:</b> ${d.waterCount} times</p>
+                        <p><b>Fertilizer:</b> ${d.fertCount} times</p>
+
+                        <button class="delete-btn" onclick="deleteCrop('${doc.id}')">
+                            Delete
+                        </button>
+                    </div>
+                `;
+            });
+        });
+});
+
+/* DELETE CROP */
+function deleteCrop(id) {
+    firebase.firestore().collection("crops").doc(id).delete();
+}
+
+</script>
+
+</body>
+</html>

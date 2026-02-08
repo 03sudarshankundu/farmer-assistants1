@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Farmer Assistants - Login</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="login.css">
+
+</head>
+<body>
+
+<div class="main-container">
+
+    <!-- LEFT SIDE -->
+    <div class="left-panel">
+        <img src="drone.jpg" class="left-img">
+        <div class="left-text">
+            <h1>Farmer Assistants</h1>
+            <p>Smart solutions for modern Indian farming — real-time weather, market rates, crop reminder, fertilizer guide, NPK calculator and more.</p>
+        </div>
+    </div>
+
+    <!-- RIGHT SIDE (FORM) -->
+    <div class="right-panel">
+        <div class="form-box">
+
+            <h2 id="formTitle">Create Account</h2>
+
+            <!-- SIGNUP FIELDS -->
+            <div id="signupFields">
+                <input type="text" id="name" placeholder="Full Name">
+                <input type="email" id="email" placeholder="Email">
+                <input type="tel" id="phone" placeholder="Phone Number">
+                <input type="number" id="age" placeholder="Age">
+                <input type="password" id="password" placeholder="Password">
+
+                <button class="btn" onclick="createAccount()">Create Account</button>
+
+                <p class="switch-text">Already have an account?
+                    <span onclick="showLogin()">Login</span>
+                </p>
+            </div>
+
+            <!-- LOGIN FIELDS -->
+            <div id="loginFields" style="display:none;">
+                <input type="email" id="loginEmail" placeholder="Email">
+                <input type="password" id="loginPassword" placeholder="Password">
+                
+                <button class="btn" onclick="loginUser()">Login</button>
+
+                <p class="switch-text">Don't have an account?
+                    <span onclick="showSignup()">Create Account</span>
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+<!-- FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+<script src="firebase-config.js"></script>
+
+<script>
+/* SWITCH TO LOGIN */
+function showLogin(){
+    signupFields.style.display = "none";
+    loginFields.style.display = "block";
+    formTitle.innerText = "Login";
+}
+
+/* SWITCH TO SIGNUP */
+function showSignup(){
+    signupFields.style.display = "block";
+    loginFields.style.display = "none";
+    formTitle.innerText = "Create Account";
+}
+
+/* CREATE ACCOUNT */
+function createAccount(){
+    let email = document.getElementById("email").value;
+    let pass  = document.getElementById("password").value;
+
+    firebase.auth().createUserWithEmailAndPassword(email,pass)
+    .then(res =>{
+        let uid = res.user.uid;
+        firebase.firestore().collection("farmers").doc(uid).set({
+            name:name.value,
+            email:email,
+            phone:phone.value,
+            age:age.value
+        }).then(()=>{
+            alert("Account Created!");
+            location.href="dashboard.html";
+        });
+    })
+    .catch(err => alert(err.message));
+}
+
+/* LOGIN USER */
+function loginUser(){
+    firebase.auth().signInWithEmailAndPassword(
+        loginEmail.value,
+        loginPassword.value
+    )
+    .then(()=>{
+        location.href="dashboard.html";
+    })
+    .catch(err => alert(err.message));
+}
+</script>
+
+</body>
+</html>
